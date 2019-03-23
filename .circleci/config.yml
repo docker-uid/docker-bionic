@@ -1,0 +1,10 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/buildpack-deps:latest
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: docker build -t wtanaka/docker-bionic-uid .
+      - run: docker run --rm -e "HOSTUID=`id -u`" wtanaka/docker-bionic-uid pwd | grep '^/home/hostuser$'
