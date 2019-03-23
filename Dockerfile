@@ -1,0 +1,22 @@
+FROM ubuntu:18.04
+MAINTAINER https://wtanaka.com/dockerfiles
+RUN apt-get update \
+  && apt-get -y upgrade \
+  && apt-get clean autoclean -y \
+  && apt-get autoremove -y \
+  && rm -rf /var/lib/apt \
+    /var/lib/dpkg/arch \
+    /var/lib/dpkg/available \
+    /var/lib/dpkg/cmethopt \
+    /var/lib/dpkg/diversions \
+    /var/lib/dpkg/diversions-old \
+    /var/lib/dpkg/lock \
+    /var/lib/dpkg/parts \
+    /var/lib/dpkg/statoverride \
+    /var/lib/dpkg/status-old \
+    /var/lib/dpkg/triggers \
+    /var/lib/cache \
+    /var/lib/log
+#&& echo 'Defaults !requiretty' > /etc/sudoers.d/norequiretty
+COPY run-as-hostuid.sh /
+ENTRYPOINT ["/run-as-hostuid.sh"]
