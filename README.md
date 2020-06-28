@@ -9,15 +9,15 @@ initiated `docker run`.
 
 Read more at [https://wtanaka.com/node/8271](https://wtanaka.com/node/8271)
 
-To download: [`docker pull wtanaka/bionic-uid`](https://hub.docker.com/r/wtanaka/bionic-uid/)
+To download: [`docker pull cliwrap/bionic`](https://hub.docker.com/r/cliwrap/bionic/)
 
 Examples
 --------
 
 Create a file called `myfile` in the current directory
 
-```docker run --rm -e "HOSTUID=`id -u`" -v "`pwd`:/work" wtanaka/bionic-uid touch myfile```
+```docker run --rm -e "HOSTUID=`id -u`" -v "`pwd`:/work" cliwrap/bionic touch myfile```
 
 Create a file with the correct uid and gid in the current directory
 
-```docker run --rm -e "HOSTUID=`id -u`" -e "HOSTGID=`id -g`" -v "`pwd`:/work" wtanaka/bionic-uid touch myfile```
+```docker run --rm -e "HOSTUID=`id -u`" -e "HOSTGID=`id -g`" -v "`pwd`:/work" cliwrap/bionic touch myfile```
