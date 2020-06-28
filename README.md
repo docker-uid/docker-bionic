@@ -1,5 +1,4 @@
-[![Build
-Status](https://travis-ci.org/docker-uid/docker-bionic-uid.svg?branch=master)](https://travis-ci.org/docker-uid/docker-bionic-uid)
+[![Build Status](https://travis-ci.com/cliwrap/bionic.svg?branch=master)](https://travis-ci.com/cliwrap/bionic)
 
 The `Dockerfile` in this repository builds a `ubuntu:18.04` container
 (with `apt-get update` and `apt-get upgrade` run) which lets you run
