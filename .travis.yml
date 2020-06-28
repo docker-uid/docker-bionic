@@ -1,0 +1,53 @@
+services:
+- docker
+script:
+- docker build -t cliwrap/bionic .
+# Check user id
+- >
+  docker run --rm -e "HOSTUID=`id -u`" -v "`pwd`:/work" cliwrap/bionic
+  id -u 2>&1 | grep "^`id -u`$"
+# Check group id
+- >
+  docker run --rm -e "HOSTUID=`id -u`" -e "HOSTGID=`id -g`" -v "`pwd`:/work"
+  cliwrap/bionic id -g 2>&1 | grep "^`id -g`$"
+# Create a file
+- >
+  docker run
+  --rm
+  -e "HOSTUID=`id -u`"
+  -v "`pwd`:/work"
+  cliwrap/bionic
+  touch ActapWuSwyk2
+  2>&1 && [ -f ActapWuSwyk2 ]
+## Create a file as root
+## TODO: Determine why this doesn't work
+#- >
+#  docker run
+#  --rm
+#  -e "HOSTUID=0"
+#  -v "`pwd`:/work"
+#  cliwrap/bionic
+#  touch veOtkovem2
+#  2>&1 && [ -f veOtkovem2 ]
+# Make sure the container works normally
+- docker run --rm cliwrap/bionic whoami | grep '^root$'
+# Make sure the container works normally
+- docker run --rm cliwrap/bionic pwd | grep '^/$'
+# Test volume mount only
+- docker run --rm -v "`pwd`:/work" cliwrap/bionic pwd | grep '^/work$'
+# Test volume mount only
+- docker run --rm -v "`pwd`:/work" cliwrap/bionic whoami | grep '^root$'
+# Test user id only
+- docker run --rm -e "HOSTUID=`id -u`" cliwrap/bionic pwd | grep '^/home/hostuser$'
+# Test user id only
+- docker run --rm -e "HOSTUID=`id -u`" cliwrap/bionic whoami | grep '^hostuser$'
+after_success:
+- >
+  curl -H "Content-Type: application/json"
+  --data '{"source_type": "Branch", "source_name": "master"}'
+  -X POST
+  https://hub.docker.com/api/build/v1/source/46f420c4-88bf-4b12-8eef-1438a122c9d4/trigger/9fc068cb-338b-498c-8565-9306269ad9bb/call/
+notifications:
+  email:
+    recipients:
+      secure: g43sfpCrFqc1mbOGdaqI53gX7U/rkMHmAJyrlRLDZUXOKyJnjSVt6esRfzIS8EsGIJdEXWx3C3Uyulh8olgumvnqGwEliuFmF8aDnD+lM3+JqvbvvX4iC0GWHgJ+wKgKzbNffsbUS/kAqRs8Q/OHNsCmc5t0WtDDJHZBo5Tede/jgl3bQKreCVD7GjCuNPwOfjUEwjAUBwDV1XBfCKR5GqAjzI9aUFboQs9ONPJCtzHfFcx5ByHcjkfnyC49uuDFZO7Dzl5V1QaPr3onQAvQLNhuhNZwsZ/Cl0e2lDSTTL30rg21ui27CkjmKlF/MCQ/kRB/G9TomdJbEr8WGJWCDAXNxKUgdojI2KBCCrMM+pALLE0E91b1XJwckw0w0yzQGFgOMi99Zph3ug8UGFk0zMLOKS7HNwhxSgfgV224otBkiK1adEG3wTeD0IWWkNEylttB2X6ueTYz8vzJ94audLUqYDLaICjik3Z+2PegEkRtPLVtGT1bE1l3UNl5NF6ayp40Kgvl9GiwG8JaMoxNjYh1CfFNbEsTuAykB83RvNODKaCGnUezE4FKdoAvoWrmsA4ME59w64/avF8QXbkGid0OD/8jgpYnIyjhdVALDpU0MLOSH8yTMKHWnVWA0gw/ZLNGe1pE2skEbuWu5bWlN/M91MPiaZfcbVcWhUAz4wA=
